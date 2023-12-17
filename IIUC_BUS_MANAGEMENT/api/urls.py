@@ -9,5 +9,6 @@ urlpatterns = [
     path('trip_insert',views.trip_insert,name="trip_insert"),
     path('bus_insert',views.bus_insert,name="bus_insert"),
     path('bus_delete/<str:bus_id>',views.bus_delete,name="bus_delete"),
-    path('number_of_trip',views.number_of_trip,name="number_of_trip")
+    path('number_of_trip',views.number_of_trip,name="number_of_trip"),
+    path('total_distance',views.total_distance,name="total_distance")
 ]

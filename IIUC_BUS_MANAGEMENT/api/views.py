@@ -196,3 +196,33 @@ def number_of_trip(request):
             print(error)
             return Response({"message": "GET called but error", "error": error});
 
+
+
+
+#total distance traveled by a bus
+@api_view(['GET','POST'])
+def total_distance(request):
+    if request.method == "GET":
+        try:
+            page = request.GET.get("page",1)
+            limit = request.GET.get("limit", 3)
+            fromm = request.GET.get("fromm",'2023-01-01')
+            too = request.GET.get("too",'2023-12-30')
+            database.cur.execute("""
+                select total_distance(%s, %s,%s,%s);
+            """,(page,limit,fromm,too))
+            result = json.loads(json.dumps(database.cur.fetchone()[0]))
+
+            database.conn.commit()
+            print(result)
+            return Response({
+                "data": result
+            }
+            )
+
+
+        except(Exception, database.Error) as error:
+            database.conn.commit()
+            print(error)
+            return Response({"message": "GET called but error", "error": error});
+
