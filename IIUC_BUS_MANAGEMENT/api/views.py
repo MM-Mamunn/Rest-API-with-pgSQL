@@ -36,6 +36,30 @@ def driver_insert(request):
 
 
 
+@api_view(['GET','POST','PATCH'])
+def driver_update(request,id):
+    if request.method == "PATCH":
+        try:
+                body = json.dumps(json.loads(request.body))
+                print(body)
+                
+                database.cur.execute("""
+                    select driver_update(%s, %s) ;
+                """,(id,body))
+                #result = json.loads(json.dumps(database.cur.fetchone()[0]))
+                database.conn.commit()
+                
+
+                return Response(
+                    {
+                        "message": "success"
+                    }
+                )
+        except(Exception, database.Error) as error:
+            database.conn.commit()
+            print(error)
+            return Response({"message": "Post called but error", "error": error});
+
 @api_view(['GET','POST'])
 def trip_insert(request):
     if request.method == "GET":
@@ -89,7 +113,7 @@ def driver_view(request):
             return Response({"message": "GET called but error", "error": error});
 
 
-@api_view(['GET','POST'])
+@api_view(['GET','POST','PATCH'])
 def driver_search(request, driver_id):
     if request.method == "GET":
         try:
@@ -110,7 +134,6 @@ def driver_search(request, driver_id):
             database.conn.commit()
             print(error)
             return Response({"message": "GET called but error", "error": error});
-
 
 
 
