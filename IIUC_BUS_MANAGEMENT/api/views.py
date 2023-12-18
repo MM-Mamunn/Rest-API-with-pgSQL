@@ -248,4 +248,3 @@ def total_distance(request):
             database.conn.commit()
             print(error)
             return Response({"message": "GET called but error", "error": error});
-
